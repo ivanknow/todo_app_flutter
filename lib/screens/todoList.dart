@@ -21,7 +21,7 @@ class TodoListState extends State {
     }
 
     return Scaffold(
-      body: TodoListItems(),
+      body: todoListItems(),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         tooltip: "new",
@@ -30,7 +30,7 @@ class TodoListState extends State {
     );
   }
 
-  ListView TodoListItems() {
+  ListView todoListItems() {
     return ListView.builder(
       itemBuilder: (BuildContext context, int position) {
         return Card(
@@ -59,18 +59,20 @@ class TodoListState extends State {
       final todosFuture = _helper.getTodoItems();
       todosFuture.then((result) {
         List<Todo> todoList = List<Todo>();
-        count = todoList.length;
-        for (int i = 0; i < todoList.length; i++) {
-          todoList.add(Todo.fromObject(result[i]));
+
+        for (int i = 0; i < result.length - 1; i++) {
+          var item = result[i];
+          todoList.add(Todo.fromObject(item));
           debugPrint(todoList[i].title);
         }
 
         setState(() {
           todos = todoList;
-          count = count;
+          count = todoList.length;
+          debugPrint("count:" + count.toString());
         });
 
-        debugPrint("total:" + count.toString());
+        debugPrint("total:" + todoList.length.toString());
       });
     });
   }
