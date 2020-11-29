@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:todo_app/model/todo.dart';
 import 'package:todo_app/util/dbhelper.dart';
 
@@ -38,8 +39,8 @@ class TodoListState extends State {
             elevation: 2.0,
             child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: Colors.red,
-                  child: Text(this.todos[position].id.toString()),
+                  backgroundColor: getProirityColor(todos[position].priority),
+                  child: Text(this.todos[position].priority.toString()),
                 ),
                 title: Text(this.todos[position].title),
                 subtitle: Text(
@@ -51,6 +52,19 @@ class TodoListState extends State {
       },
       itemCount: count,
     );
+  }
+
+  Color getProirityColor(int priority) {
+    switch (priority) {
+      case 3:
+        return Colors.red;
+        break;
+      case 2:
+        return Colors.orange;
+        break;
+      default:
+        return Colors.green;
+    }
   }
 
   void getData() {
