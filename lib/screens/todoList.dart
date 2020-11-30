@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:todo_app/model/todo.dart';
 import 'package:todo_app/util/dbhelper.dart';
+import 'package:todo_app/screens/todoForm.dart';
 
 class TodoList extends StatefulWidget {
   @override
@@ -24,7 +24,9 @@ class TodoListState extends State {
     return Scaffold(
       body: todoListItems(),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () {
+          navigateToToDoForm(Todo("", 3, ""));
+        },
         tooltip: "new",
         child: Icon(Icons.add),
       ),
@@ -48,6 +50,7 @@ class TodoListState extends State {
                 ),
                 onTap: () {
                   debugPrint("TAP ID:" + this.todos[position].id.toString());
+                  navigateToToDoForm(this.todos[position]);
                 }));
       },
       itemCount: count,
@@ -89,5 +92,12 @@ class TodoListState extends State {
         debugPrint("total:" + todoList.length.toString());
       });
     });
+  }
+
+  void navigateToToDoForm(Todo todo) async {
+    bool result = await Navigator.push(this.context,
+        MaterialPageRoute(builder: (context) {
+      return TodoForm(todo);
+    }));
   }
 }
